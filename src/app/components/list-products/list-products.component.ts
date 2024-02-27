@@ -14,15 +14,20 @@ export class ListProductsComponent implements OnInit {
   p: number;
   pageSize: number
   currentPage: number;
+  pageSizeOptions: number[];
+  maxPaginationValue: number;
 
   constructor(
     private productService: ProductService,
     private router: Router
   ) {
+    //Parametros iniciales que se pueden cambiar, de acuerdo a los requerimientos
     this.searchTerm = '';
     this.p = 1;
     this.pageSize = 5;
     this.currentPage = 1;
+    this.pageSizeOptions = [5, 10, 20];
+    this.maxPaginationValue = 20;
   }
 
   ngOnInit(): void {
@@ -66,6 +71,6 @@ export class ListProductsComponent implements OnInit {
   }
 
   addProduct() {
-    this.router.navigate(['add-product'])
+    this.router.navigate(['/products/add'])
   }
 }

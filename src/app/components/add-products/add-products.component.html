@@ -1,1 +1,88 @@
-<p>add-products works!</p>
+<app-header-brand></app-header-brand>
+<div style="display: ruby-text;">
+    <div class="add-prod-container">
+        <div class="container">
+            <div class="header-card-register">
+                <h2>Formulario de Registro</h2>
+            </div>
+
+            <form (ngSubmit)="onSubmit()" class="custom-form" [formGroup]="productForm">
+                <div class="form-group">
+                    <label for="id">ID</label>
+                    <input type="text" class="custom-input" id="id" formControlName="id">
+                    <div class="desc-error"
+                        *ngIf="productForm.get('id')?.invalid && (productForm.get('id')?.dirty || productForm.get('id')?.touched)">
+                        <div class="invalid-state" *ngIf="productForm.get('id')?.errors?.['required']">ID es requerido.
+                        </div>
+                        <div class="invalid-state" *ngIf="productForm.get('id')?.errors?.['pattern']">ID debe ser
+                            numérico.</div>
+                        <div class="invalid-state" *ngIf="productForm.get('id')?.errors?.['repeatedId']">ID repetido.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Nombre</label>
+                    <input type="text" class="custom-input" id="name" formControlName="name">
+                    <div class="desc-error"
+                        *ngIf="productForm.get('name')?.invalid && (productForm.get('name')?.dirty || productForm.get('name')?.touched)">
+                        <div class="invalid-state" *ngIf="productForm.get('name')?.errors?.['required']">Nombre es
+                            requerido.</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Descripción</label>
+                    <input type="text" class="custom-input" id="description" formControlName="description">
+                    <div class="desc-error"
+                        *ngIf="productForm.get('description')?.invalid && (productForm.get('description')?.dirty || productForm.get('description')?.touched)">
+                        <div class="invalid-state" *ngIf="productForm.get('description')?.errors?.['required']">
+                            Descripción es requerida.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="logo">Logo</label>
+                    <input type="text" class="custom-input" id="logo" formControlName="logo">
+                    <div class="desc-error"
+                        *ngIf="productForm.get('logo')?.invalid && (productForm.get('logo')?.dirty || productForm.get('logo')?.touched)">
+                        <div class="invalid-state" *ngIf="productForm.get('logo')?.errors?.['required']">Logo es
+                            requerido.</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="date_release">Fecha Liberación</label>
+                    <input type="date" class="custom-input" id="date_release" formControlName="date_release"
+                        (input)="onDateReleaseChange()">
+                    <div class="desc-error"
+                        *ngIf="productForm.get('date_release')?.invalid && (productForm.get('date_release')?.dirty || productForm.get('date_release')?.touched)">
+                        <div class="invalid-state" *ngIf="productForm.get('date_release')?.errors?.['required']">Fecha
+                            Liberación es requerida.</div>
+                        <div class="invalid-state"
+                            *ngIf="productForm.get('date_release')?.errors?.['dateTodayOrAfter']">
+                            La fecha debe ser de hoy o posterior.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="date_revision" class="color-disabled">Fecha Revisión</label>
+                    <input type="date" class="custom-input" id="date_revision" formControlName="date_revision">
+                    <div class="desc-error"
+                        *ngIf="productForm.get('date_revision')?.invalid && (productForm.get('date_revision')?.dirty || productForm.get('date_revision')?.touched)">
+                        <div class="invalid-state" *ngIf="productForm.get('date_revision')?.errors?.['required']">Fecha
+                            Revisión es requerida.
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="footer-card-register">
+                <button type="submit" class="custom-button-secondary" (click)="resetForm()">Reiniciar</button>
+                <button type="submit" class="custom-button" [disabled]="!productForm.valid"
+                    (click)="onSubmit()">Enviar</button>
+            </div>
+        </div>
+    </div>
+</div>

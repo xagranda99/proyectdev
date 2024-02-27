@@ -7,7 +7,7 @@ import { AddProductsComponent } from './components/add-products/add-products.com
 import { ListProductsComponent } from './components/list-products/list-products.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HeaderBrandComponent } from './components/header-brand/header-brand.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
@@ -18,11 +18,12 @@ import { NgxPaginationModule } from 'ngx-pagination';
     HeaderBrandComponent,
   ],
   imports: [
+    ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    NgxPaginationModule 
+    NgxPaginationModule
   ],
   providers: [],
   bootstrap: [AppComponent]

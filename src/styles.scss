@@ -1,9 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'variables';
+
 .container_app {
     height: 50rem;
-    background-color: #f5f5f5;
+    background-color: $background-app;
 }
 
 body {
-    background: #f5f5f5;
+    background: $background-app;
+}
+
+.custom-button[disabled] {
+    opacity: 0.5;
+}
+
+.custom-input[disabled] {
+    opacity: 0.5;
+    color: $color-text-disabled;
+}
+
+.custom-input.ng-invalid.ng-touched {
+    border: 1px solid $color-text-invalid;
+    /* Define el estilo de borde cuando el campo es inválido, sucio y tocado */
 }

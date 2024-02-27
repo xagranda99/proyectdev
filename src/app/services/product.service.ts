@@ -18,7 +18,7 @@ export class ProductService {
   constructor(private http: HttpClient) { }
 
   getProducts(): Observable<Product[]> {
-    return this.http.get<any[]>(this.apiUrl, { headers: this.headers }).pipe(
+    return this.http.get<any[]>(this.apiUrl + '/bp/products', { headers: this.headers }).pipe(
       map(productsData => productsData.map(product => this.mapToProduct(product)))
     );
   }
@@ -32,5 +32,13 @@ export class ProductService {
       date_release: data.date_release,
       date_revision: data.date_revision
     };
+  }
+
+  addProduct(productData: Product): Observable<any> {
+    return this.http.post<any>(this.apiUrl + '/bp/products', productData, { headers: this.headers });
+  }
+
+  verifyId(id: string): Observable<boolean> {
+    return this.http.get<any>(this.apiUrl + '/bp/products/verification', { params: { id } });
   }
 }
