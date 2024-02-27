@@ -1,0 +1,33 @@
+<app-header-brand></app-header-brand>
+<div class="container_app">
+    <div>
+
+    </div>
+    <div class="container_table">
+        <div class="container_table_in">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Logo</th>
+                        <th>Nombre del producto</th>
+                        <th>Descripción</th>
+                        <th>Fecha de liberación</th>
+                        <th>Fecha de reestructuración</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let x of products">
+                        <td>
+                            <img class="logo_product" src="{{x.logo}}" alt="logo">
+                        </td>
+                        <td>{{ x.name }}</td>
+                        <td>{{ x.description }}</td>
+                        <td>{{ x.date_release }}</td>
+                        <td>{{ x.date_revision }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

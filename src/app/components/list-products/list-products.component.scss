@@ -1,0 +1,21 @@
+table,
+th,
+td {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    padding: 5px;
+}
+
+.logo_product {
+    width: 2.5rem;
+}
+
+.container_table {
+    position: relative;
+    padding: 2rem;
+}
+
+.container_table_in {
+    padding: 1rem;
+    background: white;
+}
