@@ -3,12 +3,12 @@
     <div class="add-prod-container">
         <div class="container">
             <div class="header-card-register">
-                <h2>Formulario de Registro</h2>
+                <h2>{{labelPrincipal}}</h2>
             </div>
 
             <form (ngSubmit)="onSubmit()" class="custom-form" [formGroup]="productForm">
                 <div class="form-group">
-                    <label for="id">ID</label>
+                    <label for="id" [ngClass]="{'color-disabled': isEditMode}">ID</label>
                     <input type="text" class="custom-input" id="id" formControlName="id">
                     <div class="desc-error"
                         *ngIf="productForm.get('id')?.invalid && (productForm.get('id')?.dirty || productForm.get('id')?.touched)">
@@ -18,6 +18,10 @@
                             numérico.</div>
                         <div class="invalid-state" *ngIf="productForm.get('id')?.errors?.['repeatedId']">ID repetido.
                         </div>
+                        <div class="invalid-state" *ngIf="productForm.get('id')?.errors?.['minlength']">Mínimo de
+                            caracteres permitidos</div>
+                        <div class="invalid-state" *ngIf="productForm.get('id')?.errors?.['maxlength']">Máximo de
+                            caracteres permitidos</div>
                     </div>
                 </div>
 
@@ -28,6 +32,10 @@
                         *ngIf="productForm.get('name')?.invalid && (productForm.get('name')?.dirty || productForm.get('name')?.touched)">
                         <div class="invalid-state" *ngIf="productForm.get('name')?.errors?.['required']">Nombre es
                             requerido.</div>
+                        <div class="invalid-state" *ngIf="productForm.get('name')?.errors?.['minlength']">Mínimo de
+                            caracteres permitidos</div>
+                        <div class="invalid-state" *ngIf="productForm.get('name')?.errors?.['maxlength']">Máximo de
+                            caracteres permitidos</div>
                     </div>
                 </div>
 
@@ -39,6 +47,10 @@
                         <div class="invalid-state" *ngIf="productForm.get('description')?.errors?.['required']">
                             Descripción es requerida.
                         </div>
+                        <div class="invalid-state" *ngIf="productForm.get('description')?.errors?.['minlength']">Mínimo
+                            de caracteres permitidos</div>
+                        <div class="invalid-state" *ngIf="productForm.get('description')?.errors?.['maxlength']">Máximo
+                            de caracteres permitidos</div>
                     </div>
                 </div>
 
@@ -47,19 +59,19 @@
                     <input type="text" class="custom-input" id="logo" formControlName="logo">
                     <div class="desc-error"
                         *ngIf="productForm.get('logo')?.invalid && (productForm.get('logo')?.dirty || productForm.get('logo')?.touched)">
-                        <div class="invalid-state" *ngIf="productForm.get('logo')?.errors?.['required']">Logo es
-                            requerido.</div>
+                        <div class="invalid-state" *ngIf="productForm.get('logo')?.errors?.['required']">
+                            Logo es requerido.</div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="date_release">Fecha Liberación</label>
+                    <label for="date_release" [ngClass]="{'color-disabled': isEditMode}">Fecha Liberación</label>
                     <input type="date" class="custom-input" id="date_release" formControlName="date_release"
                         (input)="onDateReleaseChange()">
                     <div class="desc-error"
                         *ngIf="productForm.get('date_release')?.invalid && (productForm.get('date_release')?.dirty || productForm.get('date_release')?.touched)">
-                        <div class="invalid-state" *ngIf="productForm.get('date_release')?.errors?.['required']">Fecha
-                            Liberación es requerida.</div>
+                        <div class="invalid-state" *ngIf="productForm.get('date_release')?.errors?.['required']">
+                            Fecha Liberación es requerida.</div>
                         <div class="invalid-state"
                             *ngIf="productForm.get('date_release')?.errors?.['dateTodayOrAfter']">
                             La fecha debe ser de hoy o posterior.
@@ -72,8 +84,8 @@
                     <input type="date" class="custom-input" id="date_revision" formControlName="date_revision">
                     <div class="desc-error"
                         *ngIf="productForm.get('date_revision')?.invalid && (productForm.get('date_revision')?.dirty || productForm.get('date_revision')?.touched)">
-                        <div class="invalid-state" *ngIf="productForm.get('date_revision')?.errors?.['required']">Fecha
-                            Revisión es requerida.
+                        <div class="invalid-state" *ngIf="productForm.get('date_revision')?.errors?.['required']">
+                            Fecha Revisión es requerida.
                         </div>
                     </div>
                 </div>

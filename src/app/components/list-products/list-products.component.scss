@@ -1,7 +1,8 @@
+@import '../../../variables';
+
 table,
 th,
 td {
-    border: 1px solid grey;
     border-collapse: collapse;
     padding: 5px;
 }
@@ -34,4 +35,111 @@ td {
 
 .table-custom {
     width: 100%;
+}
+
+.table-custom {
+    border-collapse: collapse;
+}
+
+.table-custom th,
+.table-custom td {
+    border: none;
+    padding: 8px;
+}
+
+.table-custom tbody tr {
+    border-bottom: 1px solid #ccc;
+}
+
+.table-custom thead th {
+    border-bottom: 1px solid #ccc;
+}
+
+.table-custom tbody tr:last-child {
+    border-bottom: none;
+}
+
+/* Estilo para los botones */
+.dropbtn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+/* Estilo para el menú desplegable */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Estilo para el contenido del menú desplegable */
+.dropdown-content {
+    display: grid;
+    padding: 0.5rem;
+    gap: 0.25rem;
+    justify-items: baseline;
+    position: absolute;
+    background-color: #fff;
+    min-width: 80px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.property-extra {
+    display: flex;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.property-extra:hover {
+    color: $color-primary;
+}
+
+.modal-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Fondo oscuro semitransparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    background-color: white;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+}
+
+.custom-button {
+    padding: 10px 20px;
+    background-color: $color-primary;
+    border: none;
+    border-radius: 4px;
+    color: $color-secondary;
+    font-size: 0.70rem;
+    cursor: pointer;
+    font-weight: 600;
+    height: 2.6rem;
+}
+
+.custom-button-secondary {
+    padding: 10px 20px;
+    background-color: $color-tertiary;
+    border: none;
+    border-radius: 4px;
+    color: $color-secondary;
+    font-size: 0.70rem;
+    cursor: pointer;
+    font-weight: 600;
+    height: 2.6rem;
+}
+
+.footer-modal {
+    display: flex;
+    place-content: center;
+    gap: 1rem;
 }

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Product } from 'src/app/models/Product';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -16,10 +17,14 @@ export class ListProductsComponent implements OnInit {
   currentPage: number;
   pageSizeOptions: number[];
   maxPaginationValue: number;
+  modalVisible!: boolean;
+  titleProduct: any;
+  idProductSelected: any;
 
   constructor(
     private productService: ProductService,
-    private router: Router
+    private router: Router,
+    private elementRef: ElementRef
   ) {
     //Parametros iniciales que se pueden cambiar, de acuerdo a los requerimientos
     this.searchTerm = '';
@@ -31,15 +36,8 @@ export class ListProductsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.productService.getProducts().subscribe(
-      (data) => {
-        this.products = data;
-        console.log(this.products); // Hacer algo con los datos
-      },
-      (error) => {
-        console.error('Error al obtener productos:', error);
-      }
-    );
+    this.modalVisible = false;
+    this.getProducts();
   }
 
   get totalPages(): number {
@@ -58,6 +56,20 @@ export class ListProductsComponent implements OnInit {
     return this.filteredProducts.slice(startIndex, startIndex + this.pageSize);
   }
 
+  getProducts() {
+    this.productService.getProducts().subscribe(
+      (data) => {
+        this.products = data;
+        this.products.forEach(product => {
+          product.showDropdown = false;
+        });
+      },
+      (error) => {
+        console.error('Error al obtener productos:', error);
+      }
+    );
+  }
+
   prevPage() {
     this.currentPage--;
   }
@@ -72,5 +84,52 @@ export class ListProductsComponent implements OnInit {
 
   addProduct() {
     this.router.navigate(['/products/add'])
+  }
+
+  openModal(product: any): void {
+    this.titleProduct = product.name;
+    this.idProductSelected = product.id;
+    this.modalVisible = true;
+  }
+
+  closeModal(): void {
+    this.modalVisible = false;
+  }
+
+  toggleDropdown(event: Event) {
+    const target = event.currentTarget as HTMLElement;
+    const parentTr = target.closest('tr');
+    if (parentTr && parentTr.parentElement) {
+      const index = Array.from(parentTr.parentElement.children).indexOf(parentTr);
+      this.pagedProducts.forEach((product, i) => {
+        if (i !== index) {
+          product.showDropdown = false;
+        }
+      });
+      this.pagedProducts[index].showDropdown = !this.pagedProducts[index].showDropdown;
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  closeDropdowns(event: MouseEvent) {
+    const clickedInside = this.elementRef.nativeElement.contains(event.target);
+    if (!clickedInside) {
+      this.pagedProducts.forEach(product => product.showDropdown = false);
+    }
+  }
+
+  editProduct(product: Product) {
+    this.productService.setTempProduct(product);
+    this.router.navigate(['/products/add'], { queryParams: { isEditMode: true } })
+  }
+
+  deleteProduct() {
+    this.modalVisible = false;
+    this.productService.deleteProduct(this.idProductSelected).subscribe(data => {
+      this.getProducts();
+    },
+      err => {
+        this.getProducts();
+      });
   }
 }

@@ -1,7 +1,8 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Observable, map, of } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, debounceTime, distinctUntilChanged, map, of, switchMap, take } from 'rxjs';
 import { Product } from 'src/app/models/Product';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -13,61 +14,118 @@ import { ProductService } from 'src/app/services/product.service';
 export class AddProductsComponent implements OnInit {
 
   productForm!: FormGroup;
+  isEditMode: boolean | undefined;
+  tempProduct: Product | undefined;
+  labelPrincipal!: string;
 
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private productService: ProductService,
+    private route: ActivatedRoute,
+    private datePipe: DatePipe
   ) {
+    this.isEditMode = false;
   }
   ngOnInit(): void {
-    // Obtener la fecha actual
+    this.labelPrincipal = 'Formulario de Registro'
     const currentDate = new Date();
-    // Formatear la fecha como YYYY-MM-DD para establecerla en el campo dateRelease
     const formattedDate = currentDate.toISOString().slice(0, 10);
-
-    // Calcular la fecha de dateRevision como dateRelease + 1 año
     const dateRelease = new Date(formattedDate);
     const nextYearDate = new Date(dateRelease);
     nextYearDate.setFullYear(nextYearDate.getFullYear() + 1);
-
-    // Formatear la nueva fecha como YYYY-MM-DD
     const formattedNextYearDate = nextYearDate.toISOString().slice(0, 10);
+    this.isEditMode = this.route.snapshot.queryParams['isEditMode'] === 'true';
+
+    const dateValidators = this.isEditMode ? [] : [this.dateTodayOrAfterValidator];
+    const idValidators = this.isEditMode ? [] : [Validators.minLength(3), Validators.maxLength(10), this.repeatedIdValidator];
 
     this.productForm = this.fb.group({
-      id: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(10)], this.repeatedIdValidator() // Aquí debes pasar el validador asíncrono
+      id: [{ value: '', disabled: this.isEditMode },
+      [Validators.required, ...idValidators]
       ],
-      name: ['', Validators.required, Validators.min(5), Validators.max(100)],
-      description: ['', Validators.required, Validators.min(10), Validators.max(200)],
-      logo: ['', [Validators.required]],
-      date_release: [formattedDate, [Validators.required], [this.dateTodayOrAfterValidator]],// Establecer la fecha de hoy en dateRelease
-      date_revision: [{ value: formattedNextYearDate, disabled: true }, Validators.required] // Establecer la fecha de nextYear en dateRevision
+      name: ['',
+        [Validators.required, Validators.minLength(5), Validators.maxLength(100)]
+      ],
+      description: ['',
+        [Validators.required, Validators.minLength(10), Validators.maxLength(200)]
+      ],
+      logo: ['',
+        [Validators.required]
+      ],
+      date_release: [
+        { value: formattedDate, disabled: this.isEditMode },
+        [Validators.required], dateValidators
+      ],
+      date_revision: [{ value: formattedNextYearDate, disabled: true }]
     });
+
+    if (this.isEditMode) {
+      this.tempProduct = this.productService.getTempProduct();
+      const formattedDateRelease = this.datePipe.transform(this.tempProduct.date_release, 'yyyy-MM-dd');
+      const formattedDateRevision = this.datePipe.transform(this.tempProduct.date_revision, 'yyyy-MM-dd');
+      if (this.tempProduct) {
+        this.labelPrincipal = 'Edición de Producto'
+        this.productForm.patchValue({
+          id: this.tempProduct.id,
+          name: this.tempProduct.name,
+          description: this.tempProduct.description,
+          logo: this.tempProduct.logo,
+          date_release: formattedDateRelease,
+          date_revision: formattedDateRevision
+        });
+        this.productForm.markAllAsTouched();
+      }
+      const idControl = this.productForm.get('id');
+      if (idControl) {
+        idControl.clearValidators(); // Eliminar todos los validadores
+        idControl.updateValueAndValidity();
+      }
+
+      const dateReleaseControl = this.productForm.get('date_release');
+      if (dateReleaseControl) {
+        dateReleaseControl.clearValidators();
+        dateReleaseControl.updateValueAndValidity();
+      }
+    }
   }
 
-  onSubmit() {
-    if (this.productForm.valid) {
-      const dateRelease = new Date(this.productForm.get('date_release')?.value);
-      const dateRevision = new Date(this.productForm.get('date_revision')?.value);
 
-      const productData = {
+  onSubmit() {
+    if (!this.productForm.valid) return;
+
+    const dateRelease = new Date(this.productForm.get('date_release')?.value);
+    const dateRevision = new Date(this.productForm.get('date_revision')?.value);
+    const id = this.productForm.get('id')?.value
+
+    let productData = [];
+    if (this.isEditMode) {
+      productData = {
+        ...this.productForm.value,
+        id: id,
+        date_release: dateRelease.toISOString(),
+        date_revision: dateRevision.toISOString()
+      };
+    } else {
+      productData = {
         ...this.productForm.value,
         date_release: dateRelease.toISOString(),
         date_revision: dateRevision.toISOString()
       };
-      this.productService.addProduct(productData).subscribe(
-        (res) => {
-          res
-          this.productForm.reset();
-          this.router.navigate(['/products']);
-        },
-        error => {
-          console.error('Error al agregar el producto:', error);
-        }
-      );
-    } else {
-
     }
+
+
+    const productServiceMethod = this.isEditMode ? 'editProduct' : 'addProduct';
+
+    this.productService[productServiceMethod](productData).subscribe(
+      (res) => {
+        this.productForm.reset();
+        this.router.navigate(['/products']);
+      },
+      error => {
+        console.error('Error al agregar/editar el producto:', error);
+      }
+    );
   }
 
   onDateReleaseChange(): void {
@@ -112,7 +170,16 @@ export class AddProductsComponent implements OnInit {
   }
 
   resetForm() {
-    this.productForm.reset(); // Restablecer todos los campos del formulario
+    if (!this.isEditMode) {
+      this.productForm.reset();
+    } else {
+      const fieldsToReset = {
+        name: '',
+        description: '',
+        logo: ''
+      };
+      this.productForm.patchValue(fieldsToReset);
+    }
   }
 }
 
