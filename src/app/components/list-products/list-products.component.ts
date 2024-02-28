@@ -1,14 +1,15 @@
-import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Product } from 'src/app/models/Product';
 import { ProductService } from 'src/app/services/product.service';
+import { HeaderBrandComponent } from '../header-brand/header-brand.component';
 
 @Component({
   selector: 'app-list-products',
   templateUrl: './list-products.component.html',
   styleUrls: ['./list-products.component.scss']
 })
-export class ListProductsComponent implements OnInit {
+export class ListProductsComponent implements OnInit, AfterViewInit {
 
   products!: any[];
   searchTerm: string;
@@ -20,6 +21,8 @@ export class ListProductsComponent implements OnInit {
   modalVisible!: boolean;
   titleProduct: any;
   idProductSelected: any;
+
+  @ViewChild('header') header: HeaderBrandComponent | undefined;
 
   constructor(
     private productService: ProductService,
@@ -33,6 +36,10 @@ export class ListProductsComponent implements OnInit {
     this.currentPage = 1;
     this.pageSizeOptions = [5, 10, 20];
     this.maxPaginationValue = 20;
+  }
+
+  ngAfterViewInit(): void {
+    this.header?.hideBackButtonHandler(true);
   }
 
   ngOnInit(): void {

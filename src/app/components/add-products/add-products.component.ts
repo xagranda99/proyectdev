@@ -1,22 +1,24 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, debounceTime, distinctUntilChanged, map, of, switchMap, take } from 'rxjs';
 import { Product } from 'src/app/models/Product';
 import { ProductService } from 'src/app/services/product.service';
+import { HeaderBrandComponent } from '../header-brand/header-brand.component';
 
 @Component({
   selector: 'app-add-products',
   templateUrl: './add-products.component.html',
   styleUrls: ['./add-products.component.scss']
 })
-export class AddProductsComponent implements OnInit {
+export class AddProductsComponent implements OnInit, AfterViewInit {
 
   productForm!: FormGroup;
   isEditMode: boolean | undefined;
   tempProduct: Product | undefined;
   labelPrincipal!: string;
+  @ViewChild('header') header: HeaderBrandComponent | undefined;
 
   constructor(
     private router: Router,
@@ -26,6 +28,9 @@ export class AddProductsComponent implements OnInit {
     private datePipe: DatePipe
   ) {
     this.isEditMode = false;
+  }
+  ngAfterViewInit(): void {
+    this.header?.hideBackButtonHandler(false);
   }
   ngOnInit(): void {
     this.labelPrincipal = 'Formulario de Registro'
@@ -38,12 +43,11 @@ export class AddProductsComponent implements OnInit {
     this.isEditMode = this.route.snapshot.queryParams['isEditMode'] === 'true';
 
     const dateValidators = this.isEditMode ? [] : [this.dateTodayOrAfterValidator];
-    const idValidators = this.isEditMode ? [] : [Validators.minLength(3), Validators.maxLength(10), this.repeatedIdValidator];
+    const idValidators = this.isEditMode ? [] : [Validators.required, Validators.minLength(3), Validators.maxLength(10)];
+    const idRepeatedValidators = this.isEditMode ? [] : this.repeatedIdValidator();
 
     this.productForm = this.fb.group({
-      id: [{ value: '', disabled: this.isEditMode },
-      [Validators.required, ...idValidators]
-      ],
+      id: [{ value: '', disabled: this.isEditMode }, idValidators, idRepeatedValidators],
       name: ['',
         [Validators.required, Validators.minLength(5), Validators.maxLength(100)]
       ],
