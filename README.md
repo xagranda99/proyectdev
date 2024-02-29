@@ -1,27 +1,38 @@
-# Proyectdev
+# Proyectdev para DEVSU
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.9.
+¡Hola equipo de DevSu!
 
-## Development server
+Espero que estén teniendo un excelente día. Antes que nada, me gustaría expresar mi agradecimiento por la oportunidad de participar en esta prueba técnica. Reconozco que mis resultados en las pruebas de aptitud cognitiva y teóricas no fueron tan altos como esperaba (68%), pero quiero asegurarme de que se reconozca el esfuerzo y dedicación que he puesto en este proyecto. Agradecería mucho si pudieran tomarse un momento adicional para revisar minuciosamente mi trabajo.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Instrucciones para ejecutar el proyecto:
 
-## Code scaffolding
+1. Clonar el repositorio
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Ejecuta `git clone https://github.com/xagranda99/proyectdev.git` para clonar el proyecto.
 
-## Build
+2. Cambiar a la rama de desarrollo:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+`git checkout DEVSU_01_desarrollo`
 
-## Running unit tests
+3. Ve a la carpeta raiz e instala las dependencias del proyecto:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+`npm install`
 
-## Running end-to-end tests
+4. Una vez finalizada la instalación, ejecuta el comando:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+`npm run start`
 
-## Further help
+## Instrucciones para ejecutar las pruebas unitarias con JEST
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Para ejecutar las pruebas unitarias con Jest y asegurarse de alcanzar un coverage del 70%, utiliza el siguiente comando:
+
+`npm run test:watch`
+
+¡Y eso es todo!
+
+Por favor, tomarse un tiempo para revisar el proyecto y analizarlo en detalle. Aprecio enormemente la oportunidad y la consideración para este puesto.
+
+¡Gracias por su tiempo y atención!
+
+Saludos cordiales,
+A.G.
