@@ -9,8 +9,8 @@ import { Product } from '../models/Product';
 })
 export class ProductService {
 
-  private apiUrl = environment.apiUrl;
-  private headers = new HttpHeaders({
+  public apiUrl = environment.apiUrl;
+  public headers = new HttpHeaders({
     'Content-Type': 'application/json',
     'authorId': environment.authorId
   });

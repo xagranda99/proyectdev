@@ -8,7 +8,6 @@ import { ListProductsComponent } from './components/list-products/list-products.
 import { HttpClientModule } from '@angular/common/http';
 import { HeaderBrandComponent } from './components/header-brand/header-brand.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { DatePipe } from '@angular/common';
 
 @NgModule({
@@ -24,7 +23,6 @@ import { DatePipe } from '@angular/common';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    NgxPaginationModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

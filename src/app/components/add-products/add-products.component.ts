@@ -4,7 +4,7 @@ import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators }
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, debounceTime, distinctUntilChanged, map, of, switchMap, take } from 'rxjs';
 import { Product } from 'src/app/models/Product';
-import { ProductService } from 'src/app/services/product.service';
+import { ProductService } from '../../../../src/app/services/product.service';
 import { HeaderBrandComponent } from '../header-brand/header-brand.component';
 
 @Component({
@@ -93,7 +93,6 @@ export class AddProductsComponent implements OnInit, AfterViewInit {
       }
     }
   }
-
 
   onSubmit() {
     if (!this.productForm.valid) return;
@@ -184,6 +183,10 @@ export class AddProductsComponent implements OnInit, AfterViewInit {
       };
       this.productForm.patchValue(fieldsToReset);
     }
+  }
+
+  clickBack() {
+    this.router.navigate(['/products']);
   }
 }
 

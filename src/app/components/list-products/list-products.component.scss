@@ -7,6 +7,10 @@ td {
     padding: 5px;
 }
 
+tr>th {
+    background: $background-app;
+}
+
 .logo_product {
     width: 2.5rem;
 }
@@ -45,6 +49,7 @@ td {
 .table-custom td {
     border: none;
     padding: 8px;
+    text-align: justify;
 }
 
 .table-custom tbody tr {

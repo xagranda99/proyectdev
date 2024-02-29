@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-header-brand',
@@ -8,8 +8,9 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderBrandComponent implements OnInit {
 
   hideBackButton: boolean = false;
+  @Output() onClickBack: EventEmitter<any> = new EventEmitter();
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
 
   }
 
@@ -18,11 +19,14 @@ export class HeaderBrandComponent implements OnInit {
   }
 
   hideBackButtonHandler(option: boolean): void {
-    this.hideBackButton = option;
+    setTimeout(() => {
+      this.hideBackButton = option;
+      this.cdr.detectChanges();
+    }, 0);
   }
 
   backAction() {
-
+    this.onClickBack.emit();
   }
 
 }

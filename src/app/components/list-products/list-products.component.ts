@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Product } from 'src/app/models/Product';
-import { ProductService } from 'src/app/services/product.service';
+import { ProductService } from '../../../../src/app/services/product.service';
 import { HeaderBrandComponent } from '../header-brand/header-brand.component';
 
 @Component({
@@ -52,10 +52,13 @@ export class ListProductsComponent implements OnInit, AfterViewInit {
   }
 
   get filteredProducts() {
-    return this.products.filter(product =>
-      product.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      product.description.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+    if (this.products) {
+      return this.products.filter(product =>
+        product.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        product.description.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
+    return [];
   }
 
   get pagedProducts() {
