@@ -4,6 +4,8 @@
 
 Espero que estén teniendo un excelente día. Antes que nada, me gustaría expresar mi agradecimiento por la oportunidad de participar en esta prueba técnica. Reconozco que mis resultados en las pruebas de aptitud cognitiva y teóricas no fueron tan altos como esperaba (68%), pero quiero asegurarme de que se reconozca el esfuerzo y dedicación que he puesto en este proyecto. Agradecería mucho si pudieran tomarse un momento adicional para revisar minuciosamente mi trabajo.
 
+Se lograron realizar todas las funcionalidades F1 a F6 de manera correcta.
+
 ## Instrucciones para ejecutar el proyecto:
 
 1. Clonar el repositorio
